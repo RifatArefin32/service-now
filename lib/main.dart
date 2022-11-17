@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:service_now/splash_screen/splash_screen.dart';
 
 void main() async {
-  await Firebase.initializeApp();
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(
     MyApp(
         child: MaterialApp(

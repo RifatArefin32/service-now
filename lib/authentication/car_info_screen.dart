@@ -1,4 +1,8 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:service_now/global/global.dart';
+import 'package:service_now/splash_screen/splash_screen.dart';
 
 class CarInfoScreen extends StatefulWidget {
   @override
@@ -13,6 +17,24 @@ class _CarInfoScreenState extends State<CarInfoScreen> {
 
   List<String> carTypesList = ['uber-x', 'uber-go', 'bike'];
   String? selectedCarType;
+
+  saveCarInto() {
+    Map driverCarInfoMap = {
+      "car_color": carColorTextEditingController.text.trim(),
+      "car_number": carNumberTextEditingController.text.trim(),
+      "car_model": carModelTextEditingController.text.trim(),
+      "type": selectedCarType,
+    };
+    DatabaseReference driversRef =
+        FirebaseDatabase.instance.ref().child("drivers");
+    driversRef
+        .child(currentFirebaseuser!.uid)
+        .child("car_details")
+        .set(driverCarInfoMap);
+    Fluttertoast.showToast(msg: 'Car details has been saved.');
+    Navigator.push(
+        context, MaterialPageRoute(builder: (c) => const MySplashScreen()));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -141,12 +163,18 @@ class _CarInfoScreenState extends State<CarInfoScreen> {
               ElevatedButton(
                 onPressed: () {
                   //todo
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CarInfoScreen(),
-                    ),
-                  );
+                  if (carColorTextEditingController.text.isNotEmpty &&
+                      carNumberTextEditingController.text.isNotEmpty &&
+                      carModelTextEditingController.text.isNotEmpty &&
+                      selectedCarType != null) {
+                    saveCarInto();
+                  }
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (context) => CarInfoScreen(),
+                  //   ),
+                  // );
                 },
                 style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.lightGreenAccent),

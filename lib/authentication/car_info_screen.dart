@@ -1,27 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:service_now/authentication/car_info_screen.dart';
 
-import 'login_screen.dart';
-
-class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({super.key});
-
+class CarInfoScreen extends StatefulWidget {
   @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
+  State<CarInfoScreen> createState() => _CarInfoScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
-  TextEditingController nameTextEditingController = TextEditingController();
-  TextEditingController emailTextEditingController = TextEditingController();
-  TextEditingController phoneTextEditingController = TextEditingController();
-  TextEditingController passwordTextEditingController = TextEditingController();
+class _CarInfoScreenState extends State<CarInfoScreen> {
+  TextEditingController carModelTextEditingController = TextEditingController();
+  TextEditingController carNumberTextEditingController =
+      TextEditingController();
+  TextEditingController carColorTextEditingController = TextEditingController();
+
+  List<String> carTypesList = ['uber-x', 'uber-go', 'bike'];
+  String? selectedCarType;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(24.0),
           child: Column(
             children: [
               const SizedBox(
@@ -35,20 +34,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 height: 10,
               ),
               const Text(
-                'Register as a Driver',
+                'Give Car Details',
                 style: TextStyle(
                     fontSize: 26,
                     color: Colors.grey,
                     fontWeight: FontWeight.bold),
               ),
               TextField(
-                controller: nameTextEditingController,
+                controller: carModelTextEditingController,
                 style: const TextStyle(
                   color: Colors.grey,
                 ),
                 decoration: const InputDecoration(
-                  labelText: 'Name',
-                  hintText: 'Name',
+                  labelText: 'Car Model',
+                  hintText: 'Car Model',
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey),
                   ),
@@ -66,14 +65,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
               ),
               TextField(
-                controller: emailTextEditingController,
-                keyboardType: TextInputType.emailAddress,
+                controller: carNumberTextEditingController,
                 style: const TextStyle(
                   color: Colors.grey,
                 ),
                 decoration: const InputDecoration(
-                  labelText: 'Email',
-                  hintText: 'Email',
+                  labelText: 'Car Number',
+                  hintText: 'Car Number',
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey),
                   ),
@@ -91,14 +89,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
               ),
               TextField(
-                controller: phoneTextEditingController,
-                keyboardType: TextInputType.phone,
+                controller: carColorTextEditingController,
                 style: const TextStyle(
                   color: Colors.grey,
                 ),
                 decoration: const InputDecoration(
-                  labelText: 'Phone',
-                  hintText: 'Phone',
+                  labelText: 'Car Color',
+                  hintText: 'Car Color',
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey),
                   ),
@@ -115,31 +112,28 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
               ),
-              TextField(
-                controller: passwordTextEditingController,
-                keyboardType: TextInputType.text,
-                obscureText: true,
-                style: const TextStyle(
-                  color: Colors.grey,
+              DropdownButton(
+                hint: const Text(
+                  'Please Choose Car Type',
+                  style: TextStyle(fontSize: 14, color: Colors.grey),
                 ),
-                decoration: const InputDecoration(
-                  labelText: 'Password',
-                  hintText: 'Password',
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey),
-                  ),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey),
-                  ),
-                  hintStyle: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 10,
-                  ),
-                  labelStyle: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 15,
-                  ),
-                ),
+                value: selectedCarType,
+                onChanged: (newValue) {
+                  setState(() {
+                    selectedCarType = newValue.toString();
+                  });
+                },
+                items: carTypesList.map((car) {
+                  return DropdownMenuItem(
+                    child: Text(
+                      car,
+                      style: TextStyle(
+                        color: Colors.grey,
+                      ),
+                    ),
+                    value: car,
+                  );
+                }).toList(),
               ),
               const SizedBox(
                 height: 20,
@@ -157,28 +151,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.lightGreenAccent),
                 child: const Text(
-                  'Create Account',
+                  'Save Now',
                   style: TextStyle(
                     color: Colors.black54,
                     fontSize: 18,
                   ),
                 ),
-              ),
-              TextButton(
-                child: const Text(
-                  'Already have an account? Login Here.',
-                  style: TextStyle(
-                    color: Colors.grey,
-                  ),
-                ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => LoginScreen(),
-                    ),
-                  );
-                },
               ),
             ],
           ),
